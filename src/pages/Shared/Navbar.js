@@ -15,7 +15,10 @@ const res = await getByEmail(GETUSER,user.email)
 setProfile(res.data)
 }
 useEffect(()=>{
-  getUser()
+  if(user){
+    getUser() 
+  }
+ 
 },[user])
   const menuItems = (
     <>
