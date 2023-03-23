@@ -1,13 +1,57 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.img-upload{
+    width: 240px !important;
+    height: 100px !important;
+    padding: 10px;
 }
+.ant-upload.ant-upload-select{
+    width: 240px !important;
+    height: 100px !important;
+  }
+  .ant-input{
+    padding: 12px;
+  }
+  .ant-select-selector{
+    width: 100% !important;
+    height: 47px !important;
+    padding: 7px 11px !important;
+  }
+  .ant-input-affix-wrapper{
+    padding: 13px 11px !important;
+  }
+  :where(.css-dev-only-do-not-override-mxhywb).ant-btn-primary {
+    color: #fff;
+    background-color: #777a7e;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+}
+   :where(.css-dev-only-do-not-override-mxhywb).ant-btn.ant-btn-icon-only {
+    width: 30px;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    height: 48px;
+}
+  @media (max-width: 640px) { 
+    .img-upload{
+        width: 200px !important;
+        height: 100px !important;
+        padding: 10px;
+    }
+    .ant-upload.ant-upload-select{
+        width: 200px !important;
+        height: 100px !important;
+      }
+   }
+  @media (max-width: 476px) { 
+    .img-upload{
+        width: 180px !important;
+        height: 100px !important;
+        padding: 10px;
+    }
+    .ant-upload.ant-upload-select{
+        width: 180px !important;
+        height: 100px !important;
+      }
+   }
