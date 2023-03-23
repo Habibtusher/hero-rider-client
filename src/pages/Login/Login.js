@@ -1,5 +1,5 @@
-import { Form, Input } from "antd";
-import React from "react";
+import { Form, Input, Spin } from "antd";
+import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -7,26 +7,32 @@ import { LOGIN } from "../../api/ApiConstant";
 import { postData } from "../../api/CommonServices";
 
 const Login = () => {
-    const navigate = useNavigate()
+  const [loading,setLoading] = useState(false)
+  const navigate = useNavigate()
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const onFinish =async (values) => {
-   const data ={
-    email: values.email,
-    password: values.password
-   }
-   const res = await postData(LOGIN,data);
-   if(res.status === 'success'){
-    toast.success("Login Successfully!");
-    navigate('/profile')
-    localStorage.setItem("access_token",JSON.stringify(res.accessToken));
-    localStorage.setItem("user",JSON.stringify(res.user));
-   }
+  const onFinish = async (values) => {
+    setLoading(true)
+    const data = {
+      email: values.email,
+      password: values.password
+    }
+    const res = await postData(LOGIN, data);
+    if (res.status === 'success') {
+      localStorage.setItem("access_token", JSON.stringify(res.accessToken));
+      localStorage.setItem("user", JSON.stringify(res.user));
+  
+      toast.success("Login Successfully!");
+      navigate('/profile')
+      window.location.reload();
+    }
+    setLoading(false)
   };
   return (
+    <Spin spinning={loading}>
     <div className="h-[800px] flex justify-center items-center">
-    <div className="w-96 p-7 shadow-xl ">
+      <div className="w-96 p-7 shadow-xl ">
         <h2 className="text-xl text-center font-bold mb-4">Login</h2>
         <Form
           name="form_item_path"
@@ -55,7 +61,7 @@ const Login = () => {
             label="Password"
             name="password"
             rules={[
-                {required:true, message:"please enter password"},
+              { required: true, message: "please enter password" },
               { min: 8, message: "password minimum length 8 characters" },
             ]}
           >
@@ -74,6 +80,7 @@ const Login = () => {
         </Form>
       </div>
     </div>
+    </Spin>
   );
 };
 

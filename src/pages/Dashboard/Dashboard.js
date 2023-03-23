@@ -1,4 +1,4 @@
-import { Input, Pagination, Radio, Select, Table } from 'antd';
+import { Input, Pagination, Radio, Select, Spin, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import { base_url } from '../../api/BaseUrl';
 import { getDtaWithPagination, postData } from '../../api/CommonServices';
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [users, setUsers] = useState([]);
@@ -29,26 +30,28 @@ const Dashboard = () => {
 
   const handleBlockUsers = async (id) => {
     if (id) {
-      console.log(id);
+      setLoading(true)
       const res = await postData(BLOCKUSER, { id: id });
       if (res.status === 'success') {
         toast.success(res.message)
       }
       getUsers()
-      console.log("single user", res);
+      setLoading(false)
     }
     else {
+      setLoading(true)
       const res = await postData(BLOCKUSERS, { ids: selectedUsers });
       if (res.status === 'success') {
         toast.success(res.message)
       }
       setSelectedUsers([])
       getUsers()
-      console.log("setSelectedUsers", selectedUsers);
+      setLoading(false)
     }
   }
 
   const getUsers = async () => {
+    setLoading(true)
     const res = await axios.get(`${base_url}/get-users`, {
       params: {
         page: page,
@@ -59,7 +62,7 @@ const Dashboard = () => {
     });
     setTodatCount(res.data.totalData)
     setUsers(res.data.users)
-
+    setLoading(false)
   }
   useEffect(() => {
     getUsers()
@@ -77,6 +80,8 @@ const Dashboard = () => {
   };
 
   return (
+  
+    <Spin spinning={loading}>
     <div className='min-h-screen container mx-auto'>
       <div className='sm:flex sm:items-center justify-between mb-3 gap-3'>
         <div className="mb-2">
@@ -237,6 +242,8 @@ const Dashboard = () => {
         />
       </div>
     </div>
+    </Spin>
+  
   );
 };
 

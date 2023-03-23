@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Upload, Form, Input, Typography, Row, Col, Avatar, Select } from "antd";
+import { Upload, Form, Input, Typography, Row, Col, Avatar, Select, Spin } from "antd";
 import ImgCrop from "antd-img-crop";
 import { postData } from "../../api/CommonServices";
 import { LOGIN, SIGNUP } from "../../api/ApiConstant";
@@ -8,17 +8,13 @@ import { Link, useNavigate } from "react-router-dom";
 const DrivingLearerSignUp = () => {
   const navigate = useNavigate()
   const imagebbKey = process.env.REACT_APP_IMAGE_BB;
-  const [drivingLicence, setDrivingLicence] = useState()
-  const [isNid, setIsNid] = useState(
-
-  );
+  const [isNid, setIsNid] = useState();
   const [nid, setNid] = useState()
   const [progilePic, setProfilePic] = useState()
-  const [profileImg, setProfileImg] = useState(
-
-  );
+  const [profileImg, setProfileImg] = useState();
+  const [loading, setLoading] = useState(false);
   const onFinish = async (values) => {
-
+setLoading(true)
     const data = {
       full_name: values.fullname,
       email: values.email,
@@ -32,7 +28,7 @@ const DrivingLearerSignUp = () => {
 
       is_rider: false
     }
-console.log(data);
+
     const res = await postData(SIGNUP, data)
 
     if (res.status === "success") {
@@ -50,7 +46,7 @@ console.log(data);
 
       }
     }
-
+setLoading(false)
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -105,6 +101,7 @@ console.log(data);
     },
   ]
   return (
+    <Spin spinning={loading} >
     <div className="flex justify-center items-center">
       <div className="xl:w-1/3 lg:w-2/3 md:w-auto p-7 shadow-xl ">
         <h2 className="text-xl text-center font-bold mb-4">Driving Learner SignUp</h2>
@@ -258,6 +255,7 @@ console.log(data);
         </Form>
       </div>
     </div>
+    </Spin>
   );
 };
 

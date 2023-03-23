@@ -1,16 +1,19 @@
-import { Avatar, Card, Input, Form, Row, Col, Typography } from 'antd';
+import { Avatar, Card, Input, Form, Row, Col, Typography, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { GETUSER } from '../../api/ApiConstant';
 import { getByEmail } from '../../api/CommonServices';
 
 const Profile = () => {
+    const [loading, setLoading] = useState(false);
     const [profile, setProfile] = useState()
     const user = JSON.parse(localStorage.getItem("user"));
 
     const [form] = Form.useForm();
     const getUser = async () => {
+        setLoading(true);
         const res = await getByEmail(GETUSER, user.email)
         setProfile(res.data)
+        setLoading(false);
     }
     form.setFieldsValue({
         fullname: profile?.full_name,
@@ -28,6 +31,7 @@ const Profile = () => {
         getUser()
     }, [])
     return (
+        <Spin spinning={loading}>
         <div className='md:w-1/2 mx-auto p-6'>
             <div>
                 <p className='text-3xl'>Profile</p>
@@ -152,6 +156,7 @@ const Profile = () => {
             </div>
 
         </div>
+        </Spin>
     );
 };
 

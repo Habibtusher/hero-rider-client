@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Upload, Form, Input, Typography, Row, Col, Avatar, Select } from "antd";
+import { Upload, Form, Input, Typography, Row, Col, Avatar, Select, Spin } from "antd";
 import ImgCrop from "antd-img-crop";
 import { postData } from "../../api/CommonServices";
 import { LOGIN, SIGNUP } from "../../api/ApiConstant";
@@ -10,16 +10,13 @@ const RiderSignUp = () => {
   const imagebbKey = process.env.REACT_APP_IMAGE_BB;
   const [isDrivingLicence, setIsDrivingLicence] = useState();
   const [drivingLicence, setDrivingLicence] = useState()
-  const [isNid, setIsNid] = useState(
-
-  );
+  const [isNid, setIsNid] = useState();
   const [nid, setNid] = useState()
   const [progilePic, setProfilePic] = useState()
-  const [profileImg, setProfileImg] = useState(
-
-  );
+  const [profileImg, setProfileImg] = useState( );
+  const [loading, setLoading] = useState(false);
   const onFinish = async (values) => {
-
+    setLoading(true)
     const data = {
       full_name: values.fullname,
       email: values.email,
@@ -39,7 +36,7 @@ const RiderSignUp = () => {
       },
       is_rider: true
     }
-    console.log("Success:", data);
+
     const res = await postData(SIGNUP, data)
     if (res.status === "success") {
       const data = {
@@ -54,7 +51,7 @@ const RiderSignUp = () => {
         localStorage.setItem("user", JSON.stringify(res.user));
       }
     }
-
+setLoading(false)
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -128,11 +125,12 @@ const RiderSignUp = () => {
     },
   ]
   return (
+    <Spin spinning={loading}>
     <div className="flex justify-center items-center">
       <div className="xl:w-1/3 lg:w-2/3 md:w-auto p-7 shadow-xl ">
         <h2 className="text-xl text-center font-bold mb-4">Rider SignUp</h2>
         <div className="-mb-8">
-        <Avatar size={90} src={profileImg} />
+          <Avatar size={90} src={profileImg} />
           <ImgCrop shape="round" aspect={50 / 50}>
             <Upload
               customRequest={handleUploadProfilePic}
@@ -141,7 +139,7 @@ const RiderSignUp = () => {
               <button className="btn btn-xs ml-10">Upload</button>
             </Upload>
           </ImgCrop>
-          </div>
+        </div>
         <Form
           name="form_item_path"
           layout="vertical"
@@ -152,21 +150,14 @@ const RiderSignUp = () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          
+
 
           <Row gutter={[12, 0]}>
             <Col span={12}>
               <Form.Item
                 label="Full Name"
                 name="fullname"
-                rules={
-                  [
-                    // {
-                    //   required: true,
-                    //   message: "Please input your username!",
-                    // },
-                  ]
-                }
+             
               >
                 <Input />
               </Form.Item>
@@ -258,7 +249,7 @@ const RiderSignUp = () => {
               <Form.Item label="Select Vehicle Type" name="vehicletype">
                 <Select
 
-placeholder="Select Vehicle Type"
+                  placeholder="Select Vehicle Type"
                   style={{
                     width: "100%"
                   }}
@@ -329,6 +320,7 @@ placeholder="Select Vehicle Type"
         </Form>
       </div>
     </div>
+    </Spin>
   );
 };
 

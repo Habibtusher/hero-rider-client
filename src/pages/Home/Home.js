@@ -10,14 +10,17 @@ const Home = () => {
   const access_token = JSON.parse(localStorage.getItem("access_token"));
 
   const getUser = async () => {
-    if (user) {
-      const res = await getByEmail(GETUSER, user?.email)
+    
+      const res = await getByEmail(GETUSER, user.email)
       setProfile(res.data)
-    }
+    
   }
   useEffect(() => {
-    getUser()
-  }, [])
+   
+        getUser()
+    
+  
+  }, [user])
 
   return (
     <div>

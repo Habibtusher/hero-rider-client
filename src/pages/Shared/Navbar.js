@@ -6,7 +6,8 @@ import { getByEmail } from "../../api/CommonServices";
 
 const Navbar = () => {
 const [profile,setProfile] = useState()
-  const user = JSON.parse(localStorage.getItem("user"));
+const [user,setUser] = useState(JSON.parse(localStorage.getItem("user")))
+
 
 
 const getUser = async() => {
@@ -15,15 +16,14 @@ setProfile(res.data)
 }
 useEffect(()=>{
   getUser()
-},[])
+},[user])
   const menuItems = (
     <>
   
-      {
-        user &&   <li>
+     <li>
         <Link to="/profile">Profile</Link>
       </li>
-      }
+    
    
       {
         profile?.is_admin && <li>
