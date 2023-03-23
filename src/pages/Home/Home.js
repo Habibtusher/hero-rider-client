@@ -10,8 +10,10 @@ const Home = () => {
   const access_token = JSON.parse(localStorage.getItem("access_token"));
 
   const getUser = async () => {
-    const res = await getByEmail(GETUSER, user.email)
-    setProfile(res.data)
+    if (user) {
+      const res = await getByEmail(GETUSER, user?.email)
+      setProfile(res.data)
+    }
   }
   useEffect(() => {
     getUser()
@@ -30,10 +32,10 @@ const Home = () => {
                     <p>{ele.body}</p>
                     <p>{ele.price}$</p>
                     <div className="card-actions justify-center">
-                    <Link to={`/payment/${ele.id}`}>
-                      {" "}
-                      <button className="btn ">Buy Now</button>
-                    </Link>
+                      <Link to={`/payment/${ele.id}`}>
+                        {" "}
+                        <button className="btn ">Buy Now</button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -42,16 +44,16 @@ const Home = () => {
             }
           </div>
         </div>
-      )} 
+      )}
       {access_token && profile?.is_rider && (
         <div className="w-1/2 mx-auto mt-14 h-[600px]">
           <div className="text-center " >
             Home
           </div>
         </div>
-      )} 
+      )}
       {
-        !access_token &&  (
+        !access_token && (
           <div className="flex flex-col p-96">
             <div className="flex items-center justify-center gap-5 ">
               <button className="btn btn-wide">
